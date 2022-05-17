@@ -46,7 +46,9 @@ class Server:
                 break
 
     def broadcast(self,msg):
-        pass
+        for connection in self.clients:
+             msg = bcolors.WARNING + msg + bcolors.ENDC
+             connection.send(msg.encode())
 
     def handle_client(self, c, addr):
         while True:
