@@ -1,0 +1,15 @@
+# Get the latest base image for python
+FROM python:3.7-alpine
+
+# Put files at the image '/server/' folder.
+COPY . /server/
+
+# '/server/' is base directory
+WORKDIR /server/
+
+# Expose port 8765 in the container
+EXPOSE 8762
+
+# execute the command
+RUN pip install -r requirements.txt
+CMD ["python3", "-u", "server.py"]
