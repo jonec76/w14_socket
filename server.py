@@ -51,13 +51,21 @@ class Server:
              connection.send(msg.encode())
 
     def handle_client(self, c, addr):
-        while True:
+         while True:
             msg = c.recv(1024)
             if msg.decode() != '':
-                msg = bcolors.OKGREEN + str(self.username_lookup[c])+" : " + str(msg.decode()) + bcolors.ENDC
-                for connection in self.clients:
-                    if connection != c:
-                        connection.send(msg.encode())
+                print('New message: '+str(msg.decode()))
+                if (str(msg.decode()) == "ls"):
+                    name = ""
+                    for client in self.clients:
+                        name += str(self.username_lookup[client])+", "
+                    txt = bcolors.OKGREEN + "Room Members: "+ name[:-2]+ bcolors.ENDC
+                    c.send(txt.encode())
+                else:
+                    msg = bcolors.OKGREEN + str(self.username_lookup[c])+" : " + str(msg.decode()) + bcolors.ENDC
+                    for connection in self.clients:
+                        if connection != c:
+                            connection.send(msg.encode())
             else:
                 # c.shutdown(socket.SHUT_RDWR)
                 if c:
