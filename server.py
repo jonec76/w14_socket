@@ -51,10 +51,11 @@ class Server:
     def handle_client(self, c, addr):
         while True:
             msg = c.recv(1024)
-            msg = bcolors.OKGREEN + str(self.username_lookup[c])+" : " + str(msg.decode()) + bcolors.ENDC
-            for connection in self.clients:
-                if connection != c:
-                    connection.send(msg.encode())
+            if msg.decode() != '':
+                msg = bcolors.OKGREEN + str(self.username_lookup[c])+" : " + str(msg.decode()) + bcolors.ENDC
+                for connection in self.clients:
+                    if connection != c:
+                        connection.send(msg.encode())
             else:
                 # c.shutdown(socket.SHUT_RDWR)
                 if c:
